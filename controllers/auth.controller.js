@@ -1,5 +1,7 @@
 const authService = require('../services/auth.service');
 const authInstance = new authService();
+
+
 const postRegister=async (req,res)=>{
 try {
     const registerData = req.body;
