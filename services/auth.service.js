@@ -44,9 +44,22 @@ class Auth{
         }
 
     }
+    async forgetPassword(email,password){
+        const isemailValid = await this.findUser(email);
+        //console.log(isemailValid);
+        if(!isemailValid) return {status:404,sucess:false,message:"User not found"};;
+        const hashPassword = await this.hashPassword(password);
+        const resp = await userModel.updateOne({email:email},{$set:{password:hashPassword}});
+        console.log("Response after updated ",resp);
+        if(resp.acknowledged===false) return {status:500,sucess:false,message:"Something wrong in the db"};
+        return {sucess:true,message:" password updated Sucessfully "};
+
+    }
+    
    async findUser(email){
         try {
-           const resp = await  userModel.findOne({email})
+           const resp = await  userModel.findOne({email});
+           //console.log(resp);
            if(resp) return resp;
            else return false;
            

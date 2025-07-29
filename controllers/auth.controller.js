@@ -20,4 +20,18 @@ try {
 }
 }
 
-module.exports = {postLogin,postRegister}
+const postForgetPassword=async(req,res)=>{
+    try {
+        const {email,password} = req.body;
+        console.log(email,password);
+        const resp = await authInstance.forgetPassword(email,password);
+        console.log("response in the controller ",resp);
+        if(resp.sucess===false)
+            res.status(resp.status).json({sucess:false,message:resp.message});
+        res.status(200).json({sucess:true,message:"password Sucessfully Updated"})
+        
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+}
+module.exports = {postLogin,postRegister,postForgetPassword}
